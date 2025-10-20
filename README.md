@@ -144,9 +144,6 @@ graph TD
   NEXT -- 아니오 --> END[종료]
 ```
 
-# 투자 분석 파이프라인 흐름도
-<img width="892" height="4895" alt="Image" src="https://github.com/user-attachments/assets/e1167f33-5706-435f-8ca3-d96c41823bec" />
-
 
 
 ## Directory Structure
