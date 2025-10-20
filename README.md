@@ -145,7 +145,7 @@ graph TD
 
 
 # 투자 분석 파이프라인 흐름도
-![투자 분석 플로우차트](./flowchart.png)
+<img width="892" height="4895" alt="Image" src="https://github.com/user-attachments/assets/e1167f33-5706-435f-8ca3-d96c41823bec" />
 
 
 
