@@ -134,31 +134,11 @@ def web_search(query: str) -> List[Dict[str, Any]]:
 # ============================================================================
 # 프롬프트
 # ============================================================================
-STARTUP_SEARCH_SYSTEM_PROMPT = """당신은 한국 스타트업 전문 리서처입니다.
-목표: 2025년 기준, '한국의 AI 기술을 사용하는 핀테크(금융) 스타트업'만 추려
-'name, domain, description' 필드로 구성된 JSON을 반환합니다.
+STARTUP_SEARCH_SYSTEM_PROMPT = """이 프롬프트는 사용되지 않습니다. 
+선별 에이전트에서 받은 데이터를 직접 사용합니다."""
 
-규칙:
-- **한국 기업만 선정**: 한국에 본사를 둔 스타트업만 포함. 해외 기업은 제외.
-- 반드시 'AI 기술을 핵심에 활용'하는 핀테크일 것(LLM/RAG/ML/NLP/CV/추천/리스크모델 등).
-- 은행/대기업의 사업부나 BaaS 벤더는 제외하고 '스타트업' 중심.
-- 회사당 1~2문장으로 description을 작성(한국어).
-- domain은 'Fintech/세부분야' 형태로 간결하게 표기(예: 'Fintech/신용평가', 'Fintech/결제').
-- 중복/동일 회사 제거, 최대 {limit}개.
-- 최종 출력은 JSON만(문장·해설 금지), 스키마:
-  {{"items":[{{"name":"","domain":"","description":""}}, ...]}}
-"""
-
-STARTUP_SEARCH_USER_QUERY_TMPL = """아래는 웹 검색 결과입니다. 2025년 기준으로 유효한 '한국 AI 핀테크 스타트업'만 추려 주세요.
-해외 기업은 제외하고, 한국 기업만 선정하세요.
-한국어로 요약하며, 지정 스키마(JSON-only)로만 답하세요.
-
-검색 질의:
-{query}
-
-검색 결과(최대 30개):
-{results}
-"""
+STARTUP_SEARCH_USER_QUERY_TMPL = """이 프롬프트는 사용되지 않습니다.
+선별 에이전트에서 받은 데이터를 직접 사용합니다."""
 
 TECH_SUMMARY_SYSTEM_PROMPT = """당신은 핀테크 원천 기술 분석 전문가입니다.
 
@@ -261,72 +241,12 @@ _summary_llm = ChatOpenAI(model=OPENAI_MODEL, temperature=0.0)
 
 
 # ============================================================================
-# 노드 1: 스타트업 검색
+# 검색 노드는 제거됨 - 선별 에이전트에서 받은 데이터를 직접 사용
 # ============================================================================
-def startup_search_node(state: AgentState) -> AgentState:
-    """스타트업 검색 노드"""
-    print(f"\n{'=' * 70}")
-    print(f"📍 1단계: 스타트업 검색 (최대 {state.limit}개)")
-    print("=" * 70)
-    
-    state.current_step = "startup_search"
-    
-    base_terms = [
-        "한국 AI 신용평가 스타트업",
-        "국내 로보어드바이저 스타트업",
-        "한국 AI 대출 핀테크",
-        "국내 이상거래탐지 FDS AI",
-        "한국 핀테크 스타트업 투자유치",
-        "국내 금융 AI 스타트업 시리즈"
-    ]
-    
-    if state.region.lower() == "korea":
-        base_terms += [
-            "크레파스 뱅크샐러드 토스",
-            "핀테크 스타트업 AI 기술 활용"
-        ]
-
-    query = " OR ".join(base_terms)
-    search_results = web_search(query)
-
-    sys = STARTUP_SEARCH_SYSTEM_PROMPT.format(limit=state.limit)
-    user = STARTUP_SEARCH_USER_QUERY_TMPL.format(query=query, results=search_results)
-
-    try:
-        structured = _search_llm.with_structured_output(StartupSearchResult)
-        out: StartupSearchResult = structured.invoke([
-            SystemMessage(content=sys),
-            HumanMessage(content=user)
-        ])
-
-        uniq = {}
-        cleaned: List[StartupHit] = []
-        for item in out.items:
-            key = item.name.strip().lower()
-            if key in uniq:
-                continue
-            uniq[key] = True
-            cleaned.append(StartupHit(
-                name=item.name.strip(),
-                domain=item.domain.strip(),
-                description=item.description.strip()
-            ))
-        
-        state.startups = cleaned[:state.limit]
-        
-        print(f"\n✅ {len(state.startups)}개 스타트업 발견")
-        for i, s in enumerate(state.startups, 1):
-            print(f"   {i}. {s.name} ({s.domain})")
-        
-    except Exception as e:
-        state.error = f"스타트업 검색 실패: {e}"
-        print(f"❌ {state.error}")
-    
-    return state
 
 
 # ============================================================================
-# 노드 2: 기술 요약
+# 노드 1: 기술 요약
 # ============================================================================
 def collect_company_tech_info(company_name: str, company_domain: str) -> str:
     """회사에 대한 기술 정보를 웹에서 수집"""
@@ -395,7 +315,7 @@ def collect_company_tech_info(company_name: str, company_domain: str) -> str:
 def tech_summary_node(state: AgentState) -> AgentState:
     """기술 요약 노드"""
     print(f"\n{'=' * 70}")
-    print(f"🗜️  2단계: 기술 요약 (총 {len(state.startups)}개 회사)")
+    print(f"🗜️ 1단계: 기술 요약 (총 {len(state.startups)}개 회사)")
     print("=" * 70)
     
     state.current_step = "tech_summary"
@@ -466,7 +386,7 @@ def tech_summary_node(state: AgentState) -> AgentState:
 
 
 # ============================================================================
-# 노드 3: 결과 출력 (다음 에이전트가 추가되면 이 노드 대신 다음 에이전트로)
+# 노드 2: 결과 출력 (다음 에이전트가 추가되면 이 노드 대신 다음 에이전트로)
 # ============================================================================
 def output_node(state: AgentState) -> AgentState:
     """결과 출력 노드 (나중에 다음 에이전트 노드로 대체될 예정)"""
@@ -506,20 +426,18 @@ def output_node(state: AgentState) -> AgentState:
 # 그래프 빌드
 # ============================================================================
 def build_graph():
-    """LangGraph 빌드"""
+    """LangGraph 빌드 - 검색 노드 없이 tech_summary부터 시작"""
     workflow = StateGraph(AgentState)
     
-    # 노드 추가
-    workflow.add_node("startup_search", startup_search_node)
+    # 노드 추가 (검색 노드 제거!)
     workflow.add_node("tech_summary", tech_summary_node)
     workflow.add_node("output", output_node)
     # 나중에 추가될 노드들:
     # workflow.add_node("market_evaluation", market_evaluation_node)
     # workflow.add_node("investment_decision", investment_decision_node)
     
-    # 엣지 정의
-    workflow.set_entry_point("startup_search")
-    workflow.add_edge("startup_search", "tech_summary")
+    # 엣지 정의 - tech_summary부터 시작!
+    workflow.set_entry_point("tech_summary")
     workflow.add_edge("tech_summary", "output")
     # 나중에 추가될 엣지들:
     # workflow.add_edge("tech_summary", "market_evaluation")
