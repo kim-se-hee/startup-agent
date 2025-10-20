@@ -1,0 +1,120 @@
+{
+  "total_companies": 7,
+  "companies": [
+    {
+      "company": {
+        "name": "업스테이지",
+        "domain": "Fintech/대출",
+        "description": "업스테이지는 AI 기반의 대출 서비스로, 고객의 신용도를 분석하여 맞춤형 대출 상품을 제공합니다."
+      },
+      "products": [
+        {
+          "name": "AI 대출 서비스",
+          "description": "풀스택 LLM 기반의 고객 신용도 분석 및 맞춤형 대출 상품 제공. 도큐먼트 파스와 LLM, RAG 조합을 통해 정보 검색 및 추천 기능을 지원.",
+          "strengths": [],
+          "limitations": []
+        }
+      ]
+    },
+    {
+      "company": {
+        "name": "밸런스히어로",
+        "domain": "Fintech/신용평가",
+        "description": "밸런스히어로는 AI를 활용한 대안신용평가 시스템을 개발하여 금융 접근성을 높이고 있습니다."
+      },
+      "products": [
+        {
+          "name": "대안신용평가 시스템",
+          "description": "거대언어 모델(LLM)과 머신러닝(ML) 기반의 ACS를 활용하여 사용자의 스마트폰 데이터와 누적된 결제 및 대출 데이터를 분석해 고객에 최적화된 대출 상품을 추천하는 시스템.",
+          "strengths": [
+            "전통 신용점수 모델 대비 32% 높은 성능",
+            "저소득, 무신용자 포용 금융 실현",
+            "AI 기반으로 인도 중저신용자 대상 금융 서비스 제공"
+          ],
+          "limitations": []
+        }
+      ]
+    },
+    {
+      "company": {
+        "name": "토스",
+        "domain": "Fintech/결제",
+        "description": "토스는 AI 기술을 통해 사용자 맞춤형 금융 서비스를 제공하며, 간편한 결제 시스템을 운영하고 있습니다."
+      },
+      "products": [
+        {
+          "name": "광고 클릭 예측 모델",
+          "description": "광고 클릭 예측(CTR) 모델 개발: 실제 토스 앱 내 광고 데이터를 활용해 가상의 사용자가 어떤 광고를 클릭할 것인지에 대한 확률을 빠르고 정확하게 예상하는 머신러닝 알고리즘 기반의 모델.",
+          "strengths": [],
+          "limitations": []
+        },
+        {
+          "name": "투자 정보 추천 시스템",
+          "description": "사용자에게 필요한 투자 정보를 선별하여 전달하기 위해 구축한 3가지 머신러닝 모델 기반의 시스템.",
+          "strengths": [],
+          "limitations": []
+        }
+      ]
+    },
+    {
+      "company": {
+        "name": "뱅크샐러드",
+        "domain": "Fintech/자산관리",
+        "description": "뱅크샐러드는 AI 기반의 자산 관리 서비스를 제공하여 개인의 재무 상태를 분석하고 최적의 금융 상품을 추천합니다."
+      },
+      "products": [
+        {
+          "name": "토핑+",
+          "description": "대화형 기반의 생성형 AI 자산관리 서비스. 사용자의 자산과 관련된 모든 정보를 제공하는 금융 멘토 AI.",
+          "strengths": [],
+          "limitations": []
+        }
+      ]
+    },
+    {
+      "company": {
+        "name": "크레파스",
+        "domain": "Fintech/투자",
+        "description": "크레파스는 AI를 활용한 투자 분석 플랫폼으로, 사용자에게 맞춤형 투자 전략을 제시합니다."
+      },
+      "products": [
+        {
+          "name": "대안신용평가",
+          "description": "비정형 비금융 빅데이터를 이용한 차별적인 신용평가 모델. 데이터 수집, 변수 생성, 모델 검증을 신속하고 효율적으로 처리.",
+          "strengths": [],
+          "limitations": []
+        }
+      ]
+    },
+    {
+      "company": {
+        "name": "핀다",
+        "domain": "Fintech/대출",
+        "description": "핀다는 AI 기술을 통해 대출 상품을 비교하고 최적의 대출 조건을 제시하는 서비스를 제공합니다."
+      },
+      "products": [
+        {
+          "name": "대출 상품 비교 서비스",
+          "description": "핀다의 대출 상품 비교 서비스는 구체적인 AI 기술 정보가 부족합니다.",
+          "strengths": [],
+          "limitations": []
+        }
+      ]
+    },
+    {
+      "company": {
+        "name": "딥서치",
+        "domain": "Fintech/리스크관리",
+        "description": "딥서치는 AI 기반의 리스크 관리 솔루션을 제공하여 금융 기관의 리스크 분석 및 관리를 지원합니다."
+      },
+      "products": [
+        {
+          "name": "리스크 관리 솔루션",
+          "description": "자연어 처리(NLP) 기술을 활용하여 금융 리스크 분석 및 관리 지원. 의미적 이해(Semantic Understanding) 기반의 문맥 분석 및 사용자 의도 파악.",
+          "strengths": [],
+          "limitations": []
+        }
+      ]
+    }
+  ]
+}
