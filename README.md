@@ -39,6 +39,13 @@
     - 한국 기업만 선별 (해외 기업 제외)
     - AI 기술 핵심 활용 여부 검증
     - 다양한 검색어 조합으로 포괄적 탐색
+
+-  Tech Analysis Agent: 원천 기술 분석 (AI Tech Summary)
+  - **목적**: 선별된 스타트업의 구체적인 AI 원천 기술을 분석하고 요약
+  - **핵심 기능**:
+    - "AI 활용" 같은 일반적 표현 배제, 구체적 기술만 추출
+    - 정보 부족 시 빈 리스트 반환으로 과장 방지
+    - 다음 에이전트로 전달 가능한 구조화된 데이터 생성
    
 -  Startup Select Agent: 적절한 스타트업 후보 선정 (Startup Select)
   - **목적**: 탐색 단계에서 조회한 여러 스타트업 중 가장 적절한 스타트업을 1곳을 선택
@@ -47,13 +54,6 @@
    - 단기간 내 급성장이 가능한 비지니스 모델과 기술을 보유했나
    - 기존 제품 및 서비스와 차별화된 아이디어가 있나
    - M&A IPO 등 명확한 성장 및 Exit 전략을 갖추었는가
-
--  Tech Analysis Agent: 원천 기술 분석 (AI Tech Summary)
-  - **목적**: 선별된 스타트업의 구체적인 AI 원천 기술을 분석하고 요약
-  - **핵심 기능**:
-    - "AI 활용" 같은 일반적 표현 배제, 구체적 기술만 추출
-    - 정보 부족 시 빈 리스트 반환으로 과장 방지
-    - 다음 에이전트로 전달 가능한 구조화된 데이터 생성
 
 - Tech Summary Agent: 기술력 종합 평가 (Tech Summary & Scoring)
   - **목적**: 스타트업의 AI/ML 기술 스택을 심층 분석하고 기술력을 정량화
@@ -91,7 +91,15 @@
     - 항목별 상세 breakdown (점수, 가중치, 가중점수, 설명)
     - 투자 기준 점수 기반 자동 의사결정 (Invest ≥3.5 / Hold <3.5)
     - LLM 기반 투자 판단 근거 자동 생성
-    - 자동 점수 척도 변환 (0-100 → 0-5)
+    - 자동 점수 척도 변환 (0-10)
+
+      overall_score = (
+        market_size.score * 0.25 +
+        growth_potential.score * 0.25 +
+        (10 - competition_intensity_score) * 0.25 +  # 경쟁 강도는 반비례
+        (10 - regulatory_risk_score) * 0.25           # 규제 리스크도 반비례
+)
+
 
 - Report Generator: 종합 보고서 생성 (Report Generator)
   - **목적**: 전체 분석 결과를 Markdown 및 PDF 형식의 전문 투자 보고서로 통합
@@ -136,3 +144,6 @@ ai_agent_project/
 - 민경현: Competitor Comparison Agent, Architecture Diagram
 - 송수아: Market Evaluation Agent (Agentic RAG), README Documentation
 - 윤현선: Investment Decision Agent, Report Generator, Agent Pipeline Integration
+
+
+
